@@ -9,6 +9,9 @@ export default defineConfig({
             stimulus: true
         }),
     ],
+    resolve : {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    },
     build: {
         rollupOptions: {
             input: {
