@@ -1,0 +1,17 @@
+.login {
+    width: 50%;
+    
+    &_form {
+        width: 50%;
+        
+        &_email, &_mdp {
+            display: flex;
+            flex-direction: column;
+            
+            &_input {
+                border-radius: 10px;
+            }
+        }
+
+    }
+}
