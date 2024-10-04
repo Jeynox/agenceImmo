@@ -36,10 +36,9 @@ class ApiSecurityController extends AbstractController
     #[Route('sign', name: 'sign', methods: ['POST'])]
     public function register(Request $request, EntityManagerInterface $entityManager): Response
     {
-        // Créer une nouvelle instance de User
+
         $user = new User();
-        
-        // Récupérer les données de la requête
+         // Récupérer les données de la requête
         $data = json_decode($request->getContent(), true); // récupérer le contenu JSON du body
 
         // On recupere l'adresse mail de l'utilisateur lors de l'inscription
@@ -51,7 +50,7 @@ class ApiSecurityController extends AbstractController
         // Si l'adresse mail existe déjà, on retourne un message d'erreur
         if($existingUser) {
             return $this->json([
-                'message' => 'Cet email est déjà utilisé',
+                'message' => 'Erreur lors de l\'inscription',
             ], Response::HTTP_CONFLICT);
         }
 
@@ -59,7 +58,7 @@ class ApiSecurityController extends AbstractController
         $passwordHash = password_hash($data['password'], PASSWORD_DEFAULT);
 
         // Assigner les valeurs à l'entité User
-        $user->setEmail($data['email']);
+        $user->setEmail($email);
         $user->setPassword($passwordHash); // Attention, il faudrait hacher le mot de passe ici !
         $user->setRoles(['ROLE_USER']);
 
