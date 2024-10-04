@@ -51,6 +51,26 @@
       margin: 0rem 5rem;
     }
 
+    &_list {
+      display: flex;
+      flex-direction: row;
+      width: 110%;
+
+      &_ul {
+        display: flex;
+        flex-direction: column;
+        padding: 0;
+        margin: 0 1rem ;
+
+        li{
+          list-style: none;
+          margin: 1rem 0 0;
+          font-size: clamp(0.625rem, 0.5414rem + 0.3822vw, 1rem);
+          font-weight: 400;
+        }
+      }
+    }
+
     &_email,
     &_mdp {
       display: flex;
