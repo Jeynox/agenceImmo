@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import Sign from './pages/Sign';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import NewAgence from './pages/Agence/NewAgence';
 
 export default function Main() {
 
@@ -15,6 +16,7 @@ export default function Main() {
                     <Route  path="/" element={<Home />} />
                         <Route path='/login' element={<Login />}/>
                         <Route path='/sign' element={<Sign />}/>
+                        <Route path='/agence/ajouter' element={<NewAgence />}/>
                 </Routes>
             </Router>
             < ToastContainer
