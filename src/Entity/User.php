@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -30,6 +32,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    /**
+     * @var Collection<int, Agence>
+     */
+    #[ORM\OneToMany(targetEntity: Agence::class, mappedBy: 'user')]
+    private Collection $agences;
+
+    public function __construct()
+    {
+        $this->agences = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -114,5 +127,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getUsername(): string
     {
         return $this->getUserIdentifier();
+    }
+
+    /**
+     * @return Collection<int, Agence>
+     */
+    public function getAgences(): Collection
+    {
+        return $this->agences;
+    }
+
+    public function addAgence(Agence $agence): static
+    {
+        if (!$this->agences->contains($agence)) {
+            $this->agences->add($agence);
+            $agence->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAgence(Agence $agence): static
+    {
+        if ($this->agences->removeElement($agence)) {
+            // set the owning side to null (unless already changed)
+            if ($agence->getUser() === $this) {
+                $agence->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
