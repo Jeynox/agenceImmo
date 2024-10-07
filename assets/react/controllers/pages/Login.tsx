@@ -4,6 +4,7 @@ import "../style/login.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
+import city from "../images/image-paris.jpg";
 
 
 export default function Login() {
@@ -78,15 +79,15 @@ export default function Login() {
             </div>
             </div>
             <p className="login_form_p">
-              Pas encore de compte ? <a href="#">Créer un compte</a>
+              Pas encore de compte ? <a href="/sign">Créer un compte</a>
             </p>
             <a className="login_form_a" href="#">Mot de passse oublié ?</a>
             <button type="submit" className="login_form_button"><span>Connexion</span> <FontAwesomeIcon className="login_form_button_icon" icon={faArrowRight} /></button>
           </form>
         </div>
         <div className="login_image">
-          <img
-            src="https://picsum.photos/800/1000"
+          <img className="img_login"
+            src= {city}
             alt="image"
           />
         </div>
