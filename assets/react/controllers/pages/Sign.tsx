@@ -14,6 +14,24 @@ export default function Sign() {
     const [type, setType] = useState<string>("password");
     const [eye, setEye] = useState<IconDefinition>(faEyeSlash);
     const [erreur, setErreur] = useState<string | null>(null)
+
+    const [isUpperCase, setIsUpperCase] = useState<boolean>(false);
+    const [hasNumber, setHasNumber] = useState<boolean>(false);
+    const [hasSpecialChar, setHasSpecialChar] = useState<boolean>(false);
+    const [isLongEnough, setIsLongEnough] = useState<boolean>(false);
+
+    // Fonction qui permet de vérifier si le mot de passe respecte les conditions
+    const checkPassword = (value: any) => {
+      setPassword(value);
+      setIsUpperCase(/[A-Z]/.test(value));
+      setHasNumber(/[0-9]/.test(value));
+      setHasSpecialChar(/[^A-Za-z0-9]/.test(value));
+      setIsLongEnough(value.length >= 12);      
+    }
+
+    // On vérifie si toutes les conditions sont respectées
+    const allConditions = isUpperCase && hasNumber && hasSpecialChar && isLongEnough;
+
     const nav = useNavigate();
 
     const handleShowPassword = () => {
@@ -91,17 +109,24 @@ export default function Sign() {
                   name="_password"
                   value={password}
                   className="login_form_mdp_container_input"
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) => checkPassword(e.target.value)}
                 />
                 <span className="login_form_mdp_container_icon" onClick={handleShowPassword}>
                   <FontAwesomeIcon icon={eye} />
                 </span>
               </div>
             </div>
-
-            {/**
-             * TODO Ajouter un verificateur de champ de mot de passe
-             */}
+            <div className='login_form_list'>
+              <ul className='login_form_list_ul'>
+                {/*On affiche les conditions à respecter pour le mot de passe*/}
+                <li style={{color: isLongEnough ? '#017E5B' : '#D91414'}}>X 12 caractères minimum</li>
+                <li style={{color: hasSpecialChar ? '#017E5B' : '#D91414'}}>X 1 caractère spécial</li>
+              </ul>
+              <ul className='login_form_list_ul'>
+                <li style={{color: isUpperCase ? '#017E5B' : '#D91414'}}>X 1 majuscule</li>
+                <li style={{color: hasNumber ? '#017E5B' : '#D91414'}}>X 1 chiffre</li>
+              </ul>
+            </div>
 
             <p className="login_form_p">
               Vous avez déjà un compte ? <a href="/login">Se connecter</a>
@@ -112,7 +137,8 @@ export default function Sign() {
               ainsi que notre 
               <a href="#"> Politique de confidentialité</a>
             </p>
-            <button type="submit"  className="login_form_button"><span>Inscription</span> <FontAwesomeIcon className="login_form_button_icon" icon={faArrowRight} /></button>
+            {/* On désactive le bouton d'inscription si toutes les conditions ne sont pas respectées */}
+            <button type="submit" disabled={!allConditions} className="login_form_button"><span>Inscription</span> <FontAwesomeIcon className="login_form_button_icon" icon={faArrowRight} /></button>
           </form>
         </div>
         <div className="login_image">
