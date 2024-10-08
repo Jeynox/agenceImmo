@@ -5,6 +5,9 @@ namespace App\Entity;
 use App\Entity\User;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AgenceRepository;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: AgenceRepository::class)]
 class Agence
@@ -15,6 +18,7 @@ class Agence
     private ?int $id = null;
 
     #[ORM\Column(length: 150)]
+    #[Groups(['ad:detail'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
@@ -34,6 +38,17 @@ class Agence
 
     #[ORM\ManyToOne(inversedBy: 'agences')]
     private ?User $user = null;
+
+    /**
+     * @var Collection<int, Ad>
+     */
+    #[ORM\OneToMany(targetEntity: Ad::class, mappedBy: 'agence', orphanRemoval: true)]
+    private Collection $ads;
+
+    public function __construct()
+    {
+        $this->ads = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -120,6 +135,36 @@ class Agence
     public function setUser(?User $user): static
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Ad>
+     */
+    public function getAds(): Collection
+    {
+        return $this->ads;
+    }
+
+    public function addAd(Ad $ad): static
+    {
+        if (!$this->ads->contains($ad)) {
+            $this->ads->add($ad);
+            $ad->setAgence($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAd(Ad $ad): static
+    {
+        if ($this->ads->removeElement($ad)) {
+            // set the owning side to null (unless already changed)
+            if ($ad->getAgence() === $this) {
+                $ad->setAgence(null);
+            }
+        }
 
         return $this;
     }

@@ -14,11 +14,21 @@ class UserFixtures extends Fixture
     {
         for ($i = 1; $i <= 5; $i++) {
             $user = new User();
-            $user->setEmail("user" . $i . "@test.com");
+            $user->setEmail('user' . $i . '@test.com');
             $user->setPassword($this->passwordHasher->hashPassword($user, 'test'));
             $user->setRoles(["ROLE_USER"]);
             $manager->persist($user);
         }
+
+        for ($i = 1; $i <= 3; $i++) {
+            $user = new User();
+            $user->setEmail('user' . $i . '@agence.com');
+            $user->setPassword($this->passwordHasher->hashPassword($user, 'test'));
+            $user->setRoles(["ROLE_USER", "ROLE_AGENCY"]);
+            $this->addReference('user_agency_' . $i, $user );
+            $manager->persist($user);
+        }
+
 
         $admin = new User();
         $admin->setEmail("admin@test.com");
