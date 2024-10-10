@@ -12,11 +12,11 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[IsGranted('ROLE_USER')] // a changé quand on ajoutera un rôle agence
+#[IsGranted('ROLE_AGENCY')]
 #[Route('api/agence', name: 'api_agence_')]
 class AgenceController extends AbstractController
 {
-    #[Route('/', name: 'index', methods: ['GET'])]
+    #[Route('/', name: 'all', methods: ['GET'])]
     public function getAll(AgenceRepository $agenceRepository): Response
     {
         return $this->json($agenceRepository->findAll(), Response::HTTP_OK);
@@ -25,6 +25,10 @@ class AgenceController extends AbstractController
     #[Route('/new', name: 'new', methods: ['POST'], format: 'json')]
     public function add(EntityManagerInterface $entityManager, Request $request, Security $security): Response
     {
+
+        if (!$security->getUser()) {
+            return $this->json(['error' => 'Utilisateur non authentifié'], Response::HTTP_UNAUTHORIZED);
+        }
 
         $data = $request->toArray();
         $errors = [];
@@ -59,10 +63,6 @@ class AgenceController extends AbstractController
             return $this->json(['errors' => $errors], Response::HTTP_BAD_REQUEST);
         }
 
-        if (!$security->getUser()) {
-            return $this->json(['error' => 'Utilisateur non authentifié'], Response::HTTP_UNAUTHORIZED);
-        }
-
         $agence = new Agence();
         $agence->setEmail($data['email']);
         $agence->setName($data['name']);
@@ -78,7 +78,7 @@ class AgenceController extends AbstractController
         return $this->json(['message' => 'enregistrement réussi'], Response::HTTP_CREATED);
     }
 
-    #[Route('/{id}', name: 'update', methods: ['PUT'], format: 'json')]
+    #[Route('/edit/{id}', name: 'update', methods: ['PUT'], format: 'json')]
     public function update(int $id, EntityManagerInterface $entityManager, Request $request, AgenceRepository $agenceRepository): Response
     {
         $agence = $agenceRepository->findOneBy(['id' => $id]);
@@ -131,7 +131,7 @@ class AgenceController extends AbstractController
         return $this->json(['message' => 'Mise à jour réussie'], Response::HTTP_OK);
     }
 
-    #[Route('/{id}', name: 'delete', methods: ['DELETE'])]
+    #[Route('/delete/{id}', name: 'delete', methods: ['DELETE'])]
     public function delete(int $id, EntityManagerInterface $entityManager, AgenceRepository $agenceRepository): Response
     {
         $agence = $agenceRepository->findOneBy(['id' => $id]);
@@ -145,4 +145,6 @@ class AgenceController extends AbstractController
 
         return $this->json(['message' => 'Suppression réussie'], Response::HTTP_NO_CONTENT);
     }
+
+    
 }
