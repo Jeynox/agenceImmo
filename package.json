@@ -10,6 +10,8 @@
         "@hotwired/turbo": "^7.1.1 || ^8.0",
         "@symfony/stimulus-bridge": "^3.2.0",
         "@symfony/ux-react": "file:vendor/symfony/ux-react/assets",
+        "@types/jquery": "^3.5.31",
+        "@types/react-slick": "^0.23.13",
         "react": "^18.0",
         "react-dom": "^18.0",
         "sass-embedded": "^1.79.4",
@@ -26,6 +28,7 @@
         "@types/react": "^18.3.10",
         "@types/react-dom": "^18.3.0",
         "react-router-dom": "^6.26.2",
+        "react-slick": "^0.30.2",
         "react-toastify": "^10.0.5"
     }
 }
