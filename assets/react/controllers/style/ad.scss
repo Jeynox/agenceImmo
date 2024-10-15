@@ -13,6 +13,10 @@
     border-right: solid 1px;
     width: 100%;
 
+    & > img {
+        border-radius: 20px;
+    }
+
     &_principal {
         display: flex;
         justify-content: space-between;
@@ -77,10 +81,4 @@
     &_button {
         margin: auto;
     }
-}
-
-.slick-list img {
-    border-radius: 20px;
-    max-width: 100%;
-    height: auto;
 }

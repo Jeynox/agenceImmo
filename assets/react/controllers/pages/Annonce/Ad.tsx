@@ -9,7 +9,6 @@ import {
   faLocationDot,
   faArrowRight,
 } from "@fortawesome/free-solid-svg-icons";
-import Slider from "react-slick";
 
 interface Ad {
   id: string;
@@ -49,12 +48,6 @@ export default function Ad() {
     };
     fetchData();
   }, [id]);
-  const settings = {
-    dots: true,
-    infinite: true,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-  };
 
   if (!ad) {
     return <p>Aucune annonce </p>;
@@ -63,20 +56,8 @@ export default function Ad() {
     <>
       <div className="page_ad">
         <div className="ad">
-          <Slider >
-            <div>
-                <img src="https://picsum.photos/752/472" alt={ad.title} />
-            </div>
-            <div>
-                <img src="https://picsum.photos/752/472" alt={ad.title} />
-            </div>
-            <div>
-                <img src="https://picsum.photos/752/472" alt={ad.title} />
-            </div>
-            <div>
-                <img src="https://picsum.photos/752/472" alt={ad.title} />
-            </div>
-          </Slider>
+          <img src="https://picsum.photos/752/472" alt={ad.title} />
+
           <div className="ad_principal">
             <h1 className="ad_principal_title">{ad.title}</h1>
             <h2 className="ad_principal_title">{ad.price} €</h2>
