@@ -6,6 +6,7 @@ import Sign from './pages/Sign';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NewAgence from './pages/Agence/NewAgence';
+import Ad from './pages/Annonce/Ad';
 
 export default function Main() {
 
@@ -17,6 +18,7 @@ export default function Main() {
                         <Route path='/login' element={<Login />}/>
                         <Route path='/sign' element={<Sign />}/>
                         <Route path='/agence/ajouter' element={<NewAgence />}/>
+                        <Route path='/annonce/:id' element={<Ad />}/>
                 </Routes>
             </Router>
             < ToastContainer

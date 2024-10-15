@@ -22,21 +22,26 @@ class Agence
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['ad:detail'])]
     private ?string $adress = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['ad:detail'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 5)]
+    #[Groups(['ad:detail'])]
     private ?string $postalCode = null;
 
     #[ORM\Column(length: 100)]
+    #[Groups(['ad:detail'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 100)]
     private ?string $website = null;
 
     #[ORM\ManyToOne(inversedBy: 'agences')]
+    #[Groups(['ad:detail'])]
     private ?User $user = null;
 
     /**
