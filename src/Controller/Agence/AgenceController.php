@@ -17,9 +17,19 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class AgenceController extends AbstractController
 {
     #[Route('/', name: 'all', methods: ['GET'])]
-    public function getAll(AgenceRepository $agenceRepository): Response
+    public function getAll(AgenceRepository $agenceRepository, Security $security): Response
     {
-        return $this->json($agenceRepository->findAll(), Response::HTTP_OK);
+        if (!$security->getUser()) {
+            return $this->json(['error' => 'Utilisateur non authentifié'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        $agences = $agenceRepository->findBy(['user' => $security->getUser()]);
+
+        if (!$agences) {
+            return $this->json(['error' => 'Agence non trouvée'], Response::HTTP_NOT_FOUND);
+        }
+
+        return $this->json($agences, Response::HTTP_OK, [], ['groups' => 'agence:detail']);
     }
 
     #[Route('/new', name: 'new', methods: ['POST'], format: 'json')]
@@ -145,6 +155,4 @@ class AgenceController extends AbstractController
 
         return $this->json(['message' => 'Suppression réussie'], Response::HTTP_NO_CONTENT);
     }
-
-    
 }
