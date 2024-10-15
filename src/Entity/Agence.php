@@ -15,34 +15,42 @@ class Agence
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['agence:detail'])]
     private ?int $id = null;
 
     #[ORM\Column(length: 150)]
-    #[Groups(['ad:detail'])]
+    #[Groups(['ad:detail', 'agence:detail'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['agence:detail'])]
     private ?string $adress = null;
 
     #[ORM\Column(length: 255)]
+    #[Groups(['agence:detail'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 5)]
+    #[Groups(['agence:detail'])]
     private ?string $postalCode = null;
 
     #[ORM\Column(length: 100)]
+    #[Groups(['agence:detail'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 100)]
+    #[Groups(['agence:detail'])]
     private ?string $website = null;
 
     #[ORM\ManyToOne(inversedBy: 'agences')]
+    #[Groups(['agence:detail'])]
     private ?User $user = null;
 
     /**
      * @var Collection<int, Ad>
      */
     #[ORM\OneToMany(targetEntity: Ad::class, mappedBy: 'agence', orphanRemoval: true)]
+    #[Groups(['agence:detail'])]
     private Collection $ads;
 
     public function __construct()
