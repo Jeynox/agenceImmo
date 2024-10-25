@@ -3,16 +3,29 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Login from "./pages/Login";
 import Home from './pages/Home'
 import ConfirmationPage from './pages/ConfirmationPage'
+import Sign from './pages/Sign';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import NewAgence from './pages/Agence/NewAgence';
+import Agence from './pages/Agence/Agence';
 
 export default function Main() {
 
     return (
-        <Router>
-        <Routes>
-        <Route  path="/" element={<Home />} />
-        <Route path='/login' element={<Login />}/>
-        <Route path="/confirmation" element={<ConfirmationPage />} />
-        </Routes>
-    </Router>
-);
+        <>
+            <Router>
+                <Routes>
+                    <Route  path="/" element={<Home />} />
+                        <Route path='/login' element={<Login />}/>
+                        <Route path='/sign' element={<Sign />}/>
+                        <Route path='/agence' element={<Agence />}/>
+                        <Route path='/agence/ajouter' element={<NewAgence />}/>
+                    <Route path="/confirmation" element={<ConfirmationPage />} />
+                </Routes>
+            </Router>
+            < ToastContainer
+                position="top-right"
+            />
+        </>
+    );
 }
