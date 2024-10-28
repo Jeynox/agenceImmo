@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Enum\AdType;
 use App\Enum\AdStatus;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use App\Repository\AdRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -66,6 +68,18 @@ class Ad
     #[ORM\JoinColumn(nullable: false)]
     #[Groups(['ad:detail'])]
     private ?Agence $agence = null;
+
+    /**
+     * @var Collection<int, AdOption>
+     */
+    #[ORM\OneToMany(targetEntity: AdOption::class, mappedBy: 'ad')]
+    private Collection $adOptions;
+
+    public function __construct()
+    {
+        $this->adOptions = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -212,6 +226,36 @@ class Ad
     public function setAgence(?Agence $agence): static
     {
         $this->agence = $agence;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, AdOption>
+     */
+    public function getAdOptions(): Collection
+    {
+        return $this->adOptions;
+    }
+
+    public function addAdOption(AdOption $adOption): static
+    {
+        if (!$this->adOptions->contains($adOption)) {
+            $this->adOptions->add($adOption);
+            $adOption->setAd($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdOption(AdOption $adOption): static
+    {
+        if ($this->adOptions->removeElement($adOption)) {
+            // set the owning side to null (unless already changed)
+            if ($adOption->getAd() === $this) {
+                $adOption->setAd(null);
+            }
+        }
 
         return $this;
     }
