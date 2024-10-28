@@ -55,11 +55,18 @@ class Agence
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank]
+    #[Assert\Email(
+        message: 'L\'email {{ value }} n\'est pas valide.',
+    )]
     #[Groups(['agence:detail'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 100)]
     #[Assert\NotBlank]
+    #[Assert\Url(
+        message: 'Le lien de url doit commencer par https et finir par .com, .fr, etc',
+        requireTld: true,
+    )]
     #[Groups(['agence:detail'])]
     private ?string $website = null;
 
