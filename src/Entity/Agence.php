@@ -22,7 +22,8 @@ class Agence
     #[Groups(['ad:detail', 'agence:detail'])]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 100)]
+    #[Groups(['ad:detail'])]
     #[Groups(['agence:detail'])]
     private ?string $adress = null;
 
@@ -43,6 +44,7 @@ class Agence
     private ?string $website = null;
 
     #[ORM\ManyToOne(inversedBy: 'agences')]
+    #[Groups(['ad:detail'])]
     #[Groups(['agence:detail'])]
     private ?User $user = null;
 
