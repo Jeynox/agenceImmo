@@ -6,11 +6,8 @@ import Sign from './pages/Sign';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import NewAgence from './pages/Agence/NewAgence';
-<<<<<<< HEAD
 import Ad from './pages/Annonce/Ad';
-=======
 import Agence from './pages/Agence/Agence';
->>>>>>> 4d02163c2c019ca319a5ba797793e52fd8f053a8
 
 export default function Main() {
 
