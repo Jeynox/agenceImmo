@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\User;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\AgenceRepository;
 use Doctrine\Common\Collections\Collection;
@@ -18,28 +19,54 @@ class Agence
     #[Groups(['agence:detail'])]
     private ?int $id = null;
 
-    #[ORM\Column(length: 150)]
+    #[ORM\Column(length: 50)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 2,
+        max: 50,
+        minMessage: 'Le nom de l\'agence doit faire au moins {{ limit }} caractères',
+        maxMessage: 'Le nom de l\'agence ne peut pas faire plus de {{ limit }} caractères',
+    )]
     #[Groups(['ad:detail', 'agence:detail'])]
     private ?string $name = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 5,
+        max: 100,
+        minMessage: 'L\'adresse de l\'agence doit faire au moins {{ limit }} caractères',
+        maxMessage: 'L\'adresse de l\'agence ne peut pas faire plus de {{ limit }} caractères',
+    )]
     #[Groups(['ad:detail'])]
     #[Groups(['agence:detail'])]
     private ?string $adress = null;
 
     #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     #[Groups(['agence:detail'])]
     private ?string $city = null;
 
     #[ORM\Column(length: 5)]
+    #[Assert\NotBlank]
+    #[Assert\Regex("/^\d{5}$/")]
     #[Groups(['agence:detail'])]
     private ?string $postalCode = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank]
+    #[Assert\Email(
+        message: 'L\'email {{ value }} n\'est pas valide.',
+    )]
     #[Groups(['agence:detail'])]
     private ?string $email = null;
 
     #[ORM\Column(length: 100)]
+    #[Assert\NotBlank]
+    #[Assert\Url(
+        message: 'Le lien de url doit commencer par https et finir par .com, .fr, etc',
+        requireTld: true,
+    )]
     #[Groups(['agence:detail'])]
     private ?string $website = null;
 
