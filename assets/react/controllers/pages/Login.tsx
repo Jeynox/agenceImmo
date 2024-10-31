@@ -4,7 +4,7 @@ import "../style/login.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowRight, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
-import city from "../images/image-paris.jpg";
+import city from "../images/ui/image-paris.jpg";
 
 
 export default function Login() {

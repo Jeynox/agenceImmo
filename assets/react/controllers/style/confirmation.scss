@@ -1,3 +1,21 @@
+.confirmationBackground {
+    pointer-events: none;
+    opacity: 40%;
+    display: grid;
+    place-self: center;
+    max-width: 100%;
+    object-fit: cover;
+    margin-top: 5rem;
+
+    @media (max-width: 1199.98px) {
+        margin-top: 7rem;
+    }
+
+    @media (max-width: 999.98px) {
+        display: none;
+    }
+}
+
 .confirmation{
     display: flex;
     justify-content: center;
@@ -5,34 +23,22 @@
     flex-direction: column;
     height: 100vh;
     font-family: 'Roboto', sans-serif;
-    margin: 0 25rem;
-
-    @media (max-width: 1700px) {
-        margin: 0 25rem;
-    }
-
-    @media (max-width: 1500px) {
-        margin: 0 15rem;
-    }
-
-    @media (max-width: 1200px) {
-        margin: 0 10rem;
-    }
-
-    @media (max-width: 900px) {
-        margin: 0 5rem;
-    }
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
 
     &_h1 {
         text-align: center;
-        font-size: clamp(1.25rem, 1.0828rem + 0.7643vw, 2rem);
+        font-size: clamp(1.5rem, 1.3846rem + 0.5128vw, 2rem);
         font-weight: 300;
         margin: 2rem 0;
     }
 
     &_h2 {
         text-align: center;
-        font-size: clamp(1rem, 0.8885rem + 0.5096vw, 1.5rem);
+        font-size: clamp(1.25rem, 1.1923rem + 0.2564vw, 1.5rem);
         font-weight: 200;
         margin: 2rem 0;
 
@@ -43,7 +49,7 @@
 
     &_p {
         text-align: center;
-        font-size: clamp(0.75rem, 0.6943rem + 0.2548vw, 1rem);
+        font-size: clamp(1rem, 0.9712rem + 0.1282vw, 1.125rem);
         font-weight: 200;
         margin: 0;
     }

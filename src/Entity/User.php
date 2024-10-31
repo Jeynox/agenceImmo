@@ -33,15 +33,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $isActive = false;
+
     /**
      * @var Collection<int, Agence>
      */
     #[ORM\OneToMany(targetEntity: Agence::class, mappedBy: 'user')]
     private Collection $agences;
 
+    
+    #[ORM\Column(length:64, nullable:true)]
+    private $confirmationToken;
+
+
     public function __construct()
     {
         $this->agences = new ArrayCollection();
+    }
+
+    public function isActive(): bool // Ajoutez cette méthode
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): self // Ajoutez cette méthode
+    {
+        $this->isActive = $isActive;
+        return $this;
+    }
+
+    public function getIsActive(): ?bool
+    {
+        return $this->isActive;
     }
 
     public function getId(): ?int
@@ -57,6 +81,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
+
+        return $this;
+    }
+
+    public function getConfirmationToken(): ?string
+    {
+        return $this->confirmationToken;
+    }
+
+    public function setConfirmationToken(?string $confirmationToken): self
+    {
+        $this->confirmationToken = $confirmationToken;
 
         return $this;
     }

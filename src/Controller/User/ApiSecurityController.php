@@ -3,13 +3,14 @@
 namespace App\Controller\User;
 
 use App\Entity\User;
+use App\Service\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 #[Route(path: 'api/', name: 'api_')]
 class ApiSecurityController extends AbstractController
@@ -33,7 +34,7 @@ class ApiSecurityController extends AbstractController
     }
 
     #[Route('sign', name: 'sign', methods: ['POST'])]
-    public function register(Request $request, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, EntityManagerInterface $entityManager, EmailService $emailService): Response
     {
 
         $user = new User();
@@ -61,15 +62,43 @@ class ApiSecurityController extends AbstractController
         $user->setPassword($passwordHash); // Attention, il faudrait hacher le mot de passe ici !
         $user->setRoles(['ROLE_USER']);
 
+        //Générer le token de confirmation
+        $token = bin2hex(random_bytes(32));
+        $user->setConfirmationToken($token);
+        
         // Persister et sauvegarder l'entité
         $entityManager->persist($user);
         $entityManager->flush();
 
+        // Préparer l'URL de confirmation
+        $confirmationUrl = sprintf('http://127.0.0.1:8000/confirmation/%s', $token);
+
+        $emailService->sendConfirmationEmail($email, $confirmationUrl);
+
         return $this->json([
-            'message' => 'Enregistrement effectué avec succès',
+            'message' => 'Enregistrement effectué avec succès, veuillez consulter votre boîte mail pour confirmer votre inscription.',
         ], Response::HTTP_CREATED);
     }
 
+    #[Route('confirmation/{token}', name: 'confirmation')]
+    public function confirm(string $token, EntityManagerInterface $entityManager): Response
+    {
+        // Cherchez l'utilisateur par le token de confirmation
+        $user = $entityManager->getRepository(User::class)->findOneBy(['confirmationToken' => $token]);
+
+        if (!$user) {
+            // Si aucun utilisateur n'est trouvé, retournez une erreur
+            return $this->json(['message' => 'Token de confirmation invalide.'], Response::HTTP_BAD_REQUEST);
+        }
+
+        // Mettez à jour l'état de l'utilisateur (par exemple, activer le compte)
+        $user->setIsActive(true); // Assurez-vous que cette méthode existe dans votre entité User
+        $user->setConfirmationToken(null); // Réinitialiser le token de confirmation
+        $entityManager->flush();
+
+        // Redirigez vers la page de connexion ou une autre page
+        return $this->json(['message' => 'Votre compte a été confirmé avec succès. Vous pouvez maintenant vous connecter.'], Response::HTTP_OK);
+    }
 
     #[Route(path: '/logout', name: 'logout')]
     public function logout(): void

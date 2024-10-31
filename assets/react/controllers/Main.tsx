@@ -16,11 +16,11 @@ export default function Main() {
             <Router>
                 <Routes>
                     <Route  path="/" element={<Home />} />
-                        <Route path='/login' element={<Login />}/>
-                        <Route path='/sign' element={<Sign />}/>
-                        <Route path='/agence' element={<Agence />}/>
-                        <Route path='/agence/ajouter' element={<NewAgence />}/>
-                    <Route path="/confirmation" element={<ConfirmationPage />} />
+                    <Route path='/login' element={<Login />}/>
+                    <Route path='/sign' element={<Sign />}/>
+                    <Route path='/agence' element={<Agence />}/>
+                    <Route path='/agence/ajouter' element={<NewAgence />}/>
+                    <Route path="/confirmation/:token" element={<ConfirmationPage />} />
                 </Routes>
             </Router>
             < ToastContainer

@@ -5,7 +5,7 @@ import { faArrowRight, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-ico
 import { IconDefinition } from '@fortawesome/fontawesome-common-types';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import design from "../images/design-interrieur.jpg";
+import design from "../images/ui/design-interrieur.jpg";
 
 
 export default function Sign() {
@@ -64,10 +64,7 @@ export default function Sign() {
                   toast.success("Veuillez verifier votre boite mail pour valider votre inscription",{
                     autoClose: 5000
                   })
-                  /**  
-                    * TODO: Rediriger l'utilisateur vers la page d'attente de validation par mail
-                  */
-                    nav('/login');
+                    nav("/confirmation");
                 } else {
                     toast.error("Erreur lors de l'inscription", {
                       autoClose: 5000
@@ -76,8 +73,7 @@ export default function Sign() {
                 }
             }, 1000)
           return res.json();
-        })
-        
+        }) 
     }
 
     return (
