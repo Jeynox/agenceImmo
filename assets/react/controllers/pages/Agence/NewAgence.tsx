@@ -47,11 +47,9 @@ export default function NewAgence() {
       nav("/");
       window.location.reload();
     } else {
-      console.log("Erreur de connexion");
       setErrors(data.errors);
     }
   };
-  console.log(errors);
 
   return (
     <>
@@ -103,11 +101,11 @@ export default function NewAgence() {
           </div>
           <div className="form_agency_group_input">
             <div className="form_agency_field form_agency_field_postal">
-              <label htmlFor="codePostal">Code postal :</label>
+              <label htmlFor="postalCode">Code postal :</label>
               <input
                 type="text"
                 id="codePostal"
-                name="codePostal"
+                name="postalCode"
             
                 onChange={handleChange}
                 className="form_agency_input"

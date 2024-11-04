@@ -38,8 +38,7 @@ class Agence
         minMessage: 'L\'adresse de l\'agence doit faire au moins {{ limit }} caractères',
         maxMessage: 'L\'adresse de l\'agence ne peut pas faire plus de {{ limit }} caractères',
     )]
-    #[Groups(['ad:detail'])]
-    #[Groups(['agence:detail'])]
+    #[Groups(['ad:detail', 'agence:detail'])]
     private ?string $adress = null;
 
     #[ORM\Column(length: 255)]
@@ -71,8 +70,7 @@ class Agence
     private ?string $website = null;
 
     #[ORM\ManyToOne(inversedBy: 'agences')]
-    #[Groups(['ad:detail'])]
-    #[Groups(['agence:detail'])]
+    #[Groups(['ad:detail', 'agence:detail'])]
     private ?User $user = null;
 
     /**

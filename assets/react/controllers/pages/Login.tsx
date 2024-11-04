@@ -36,6 +36,9 @@ export default function Login() {
       credentials: "same-origin",
     });
     if (response.ok) {
+      const data = await response.json();
+      const token = data.token;
+      localStorage.setItem('token', token);
       navigate("/");
       window.location.reload();
     } else {

@@ -25,10 +25,6 @@ class AgenceController extends AbstractController
 
         $agences = $agenceRepository->findBy(['user' => $security->getUser()]);
 
-        if (!$agences) {
-            return $this->json(['error' => 'Agence non trouvée'], Response::HTTP_NOT_FOUND);
-        }
-
         return $this->json($agences, Response::HTTP_OK, [], ['groups' => 'agence:detail']);
     }
 
