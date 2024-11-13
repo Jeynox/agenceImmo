@@ -1,0 +1,64 @@
+.page_new_agency {
+    &_title {
+        text-align: center;
+    }
+}
+
+.form_agency {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1.5rem;
+    margin: auto;
+    width: 60%;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+    &_group_input {
+        display: flex;
+        width: 100%;
+        label {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+          }
+
+    }
+    &_field {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 1rem;
+    
+        &_postal {
+            width: 33%;
+            margin-right: 1rem;
+        }        
+        label {
+          font-weight: 600;
+          margin-bottom: 0.5rem;
+        }
+        .form_agency_input {
+            padding: 0.75rem;
+            border: 1px solid;
+            border-radius: 8px;
+      
+            &:focus {
+              border-color: #FF2828;
+              outline: none;
+              box-shadow: 0 0 5px rgba(255, 40, 40, 0.3);
+            }
+          }
+    }
+}
+
+.error-messages {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+    .error-message {
+      color: #ff4d4f;
+      font-weight: bold;
+      margin: 0.5rem 0;
+    }
+}
+

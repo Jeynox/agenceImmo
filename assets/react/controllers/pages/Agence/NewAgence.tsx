@@ -1,5 +1,9 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../../style/pages/agency.scss";
+import { faArrowRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconDefinition } from "@fortawesome/fontawesome-common-types";
 
 interface Agence {
   name: string;
@@ -20,74 +24,127 @@ export default function NewAgence() {
     codePostal: "",
   });
   const nav = useNavigate();
-  const [errors, setErrors] = useState<{[error : string] : string}>({})
-  function handleChange(e : any) {
-    const {name, value } = e.target;
+  const [errors, setErrors] = useState<{ [error: string]: string }>({});
+  function handleChange(e: any) {
+    const { name, value } = e.target;
     setNewAgence((prevState) => ({
-        ...prevState,
-        [name] : value
+      ...prevState,
+      [name]: value,
     }));
   }
 
-  const handleSubmit = async( e : any) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
-  const response = await fetch('/api/agence/new', {
-        method: 'POST', 
-        headers : {
-            "Content-Type": "application/json",
-        }, 
-        body : JSON.stringify(newAgence)
-    })
+    const response = await fetch("/api/agence/new", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(newAgence),
+    });
     const data = await response.json();
     if (response.ok) {
-        nav("/");
-        window.location.reload();
-      } else {
-        console.log("Erreur de connexion");
-        setErrors(data.errors)
-      }
-  }
-  console.log(errors);
+      nav("/");
+      window.location.reload();
+    } else {
+      setErrors(data.errors);
+    }
+  };
 
   return (
     <>
-      <form method="post" onSubmit={handleSubmit}>
-        <div>
-        {errors &&
-            Object.keys(errors).map((error, index) => (
+      <div className="page_new_agency">
+        <h1 className="page_new_agency_title"> Ajouter une nouvelle Agence</h1>
+        <div className="error-messages">
+        {errors && (
+          <div className="error-message">
+            {Object.keys(errors).map((error, index) => (
               <p key={index}>{errors[error]}</p>
             ))}
-          <label htmlFor="email">Email :</label>
-          <input type="email" id="email" name="email" required onChange={handleChange}/>
-        </div>
+          </div>
+        )}
+          </div>
+        <form method="post" onSubmit={handleSubmit} className="form_agency">
+          <div className="form_agency_field">
+            <label htmlFor="name">Nom de l'agence :</label>
+            <input
+              type="text"
+              id="name"
+              name="name"
+             
+              onChange={handleChange}
+              className="form_agency_input"
+            />
+          </div>
+          <div className="form_agency_field">
+            <label htmlFor="email">Email :</label>
+            <input
+              type="email"
+              id="email"
+              name="email"
+             
+              onChange={handleChange}
+              className="form_agency_input"
+            />
+          </div>
 
-        <div>
-          <label htmlFor="name">Nom de l'agence :</label>
-          <input type="text" id="name" name="name" required onChange={handleChange}/>
-        </div>
+          <div className="form_agency_field">
+            <label htmlFor="address">Adresse :</label>
+            <input
+              type="text"
+              id="address"
+              name="address"
+              
+              onChange={handleChange}
+              className="form_agency_input"
+            />
+          </div>
+          <div className="form_agency_group_input">
+            <div className="form_agency_field form_agency_field_postal">
+              <label htmlFor="postalCode">Code postal :</label>
+              <input
+                type="text"
+                id="codePostal"
+                name="postalCode"
+            
+                onChange={handleChange}
+                className="form_agency_input"
+              />
+            </div>
 
-        <div>
-          <label htmlFor="address">Adresse :</label>
-          <input type="text" id="address" name="address" required onChange={handleChange}/>
-        </div>
+            <div className="form_agency_field">
+              <label htmlFor="city">Ville :</label>
+              <input
+                type="text"
+                id="city"
+                name="city"
+           
+                onChange={handleChange}
+                className="form_agency_input"
+              />
+            </div>
+          </div>
+          <div className="form_agency_field">
+            <label htmlFor="website">Site web :</label>
+            <input
+              type="text"
+              id="website"
+              name="website"
+     
+              onChange={handleChange}
+              className="form_agency_input"
+            />
+          </div>
 
-        <div>
-          <label htmlFor="postalCode">Code postal :</label>
-          <input type="text" id="postalCode" name="postalCode" required onChange={handleChange}/>
-        </div>
-
-        <div>
-          <label htmlFor="city">Ville :</label>
-          <input type="text" id="city" name="city" required onChange={handleChange}/>
-        </div>
-
-        <div>
-          <label htmlFor="website">Site web :</label>
-          <input type="text" id="website" name="website" required onChange={handleChange}/>
-        </div>
-
-        <button type="submit">Enregistrer l'agence</button>
-      </form>
+          <button type="submit" className="login_form_button">
+            <span>Enregistrer l'agence</span>
+            <FontAwesomeIcon
+              className="login_form_button_icon"
+              icon={faArrowRight}
+            />
+          </button>
+        </form>
+      </div>
     </>
   );
 }
