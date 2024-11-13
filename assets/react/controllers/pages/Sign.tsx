@@ -64,6 +64,7 @@ export default function Sign() {
                   toast.success("Veuillez verifier votre boite mail pour valider votre inscription",{
                     autoClose: 5000
                   })
+                  sessionStorage.setItem('email', email)
                     nav("/confirmation");
                 } else {
                     toast.error("Erreur lors de l'inscription", {
@@ -71,7 +72,7 @@ export default function Sign() {
                     });
                     setErreur("Erreur lors de l'inscription");
                 }
-            }, 1000)
+            }, 500)
           return res.json();
         }) 
     }

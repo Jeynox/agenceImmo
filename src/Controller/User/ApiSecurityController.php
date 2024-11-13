@@ -3,6 +3,7 @@
 namespace App\Controller\User;
 
 use App\Entity\User;
+use App\Repository\UserRepository;
 use App\Service\EmailService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -71,7 +72,7 @@ class ApiSecurityController extends AbstractController
         $entityManager->flush();
 
         // Préparer l'URL de confirmation
-        $confirmationUrl = sprintf('http://127.0.0.1:8000/confirmation/%s', $token);
+        $confirmationUrl = "http://127.0.0.1:8000/validation/" . urlencode($user->getConfirmationToken());
 
         $emailService->sendConfirmationEmail($email, $confirmationUrl);
 
@@ -80,7 +81,7 @@ class ApiSecurityController extends AbstractController
         ], Response::HTTP_CREATED);
     }
 
-    #[Route('confirmation/{token}', name: 'confirmation')]
+    #[Route('validation/{token}', name: 'validation', methods: ['GET'])]
     public function confirm(string $token, EntityManagerInterface $entityManager): Response
     {
         // Cherchez l'utilisateur par le token de confirmation
@@ -98,6 +99,25 @@ class ApiSecurityController extends AbstractController
 
         // Redirigez vers la page de connexion ou une autre page
         return $this->json(['message' => 'Votre compte a été confirmé avec succès. Vous pouvez maintenant vous connecter.'], Response::HTTP_OK);
+    }
+
+    #[Route('validate', name: 'validate', methods: ['POST'])]
+    public function isValide(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $data = json_decode($request->getContent(), true); // Decode JSON body
+        $email = $data['email'] ?? null;
+    
+        if (!$email) {
+            return $this->json(['message' => 'Email manquant'], Response::HTTP_BAD_REQUEST);
+        }
+    
+        $user = $entityManager->getRepository(User::class)->findOneBy(['email' => $email]);
+    
+        if (!$user || !$user->isActive()) {
+            return $this->json(['message' => 'Utilisateur non validé'], Response::HTTP_BAD_REQUEST);
+        }
+    
+        return $this->json(['message' => 'Validé'], Response::HTTP_OK);
     }
 
     #[Route(path: '/logout', name: 'logout')]
